@@ -18,6 +18,8 @@ const rarityStyles = {
   endangered: 'border-species-endangered bg-species-endangered/10'
 };
 
+const invasiveStyles = 'border-destructive bg-destructive/10';
+
 const rarityIndicators = {
   common: '●',
   uncommon: '●●',
@@ -42,7 +44,7 @@ export function SpeciesCard({
       className={cn(
         'relative p-3 rounded-lg border-2 cursor-pointer transition-all duration-200',
         'hover:shadow-species transform hover:scale-105',
-        rarityStyles[species.rarity],
+        species.isInvasive ? invasiveStyles : rarityStyles[species.rarity],
         isSelected && 'ring-2 ring-primary',
         isPlaced && 'opacity-60'
       )}
@@ -68,17 +70,26 @@ export function SpeciesCard({
           
           {/* Rarity indicator */}
           <div className="flex items-center gap-2 mb-2">
-            <span 
-              className={cn(
-                'text-xs font-medium',
-                `text-species-${species.rarity}`
-              )}
-            >
-              {rarityIndicators[species.rarity]}
-            </span>
-            <span className="text-xs capitalize text-muted-foreground">
-              {species.rarity}
-            </span>
+            {species.isInvasive ? (
+              <>
+                <span className="text-xs font-bold text-destructive">⚠️</span>
+                <span className="text-xs font-medium text-destructive">INVASIVE</span>
+              </>
+            ) : (
+              <>
+                <span 
+                  className={cn(
+                    'text-xs font-medium',
+                    `text-species-${species.rarity}`
+                  )}
+                >
+                  {rarityIndicators[species.rarity]}
+                </span>
+                <span className="text-xs capitalize text-muted-foreground">
+                  {species.rarity}
+                </span>
+              </>
+            )}
           </div>
         </div>
 

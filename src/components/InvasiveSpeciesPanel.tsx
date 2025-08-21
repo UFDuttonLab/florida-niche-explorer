@@ -1,0 +1,106 @@
+import React from 'react';
+import { Species } from '@/types/game';
+import { SpeciesCard } from './SpeciesCard';
+import { Button } from './ui/button';
+import { Alert, AlertDescription } from './ui/alert';
+import { AlertTriangle } from 'lucide-react';
+
+interface InvasiveSpeciesPanelProps {
+  invasives: Species[];
+  selectedSpecies: Species | null;
+  onSpeciesSelect: (species: Species) => void;
+  onSpeciesInfo: (species: Species) => void;
+  onIntroduceInvasive: (invasiveId: string) => void;
+}
+
+const availableInvasives = [
+  'burmese-python',
+  'brown-anole', 
+  'wild-boar',
+  'cattle-egret',
+  'water-hyacinth',
+  'brazilian-pepper'
+];
+
+export function InvasiveSpeciesPanel({ 
+  invasives, 
+  selectedSpecies, 
+  onSpeciesSelect, 
+  onSpeciesInfo,
+  onIntroduceInvasive
+}: InvasiveSpeciesPanelProps) {
+  return (
+    <div className="w-80 bg-destructive/5 border-l border-destructive/20 p-6 overflow-y-auto">
+      <div className="mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <AlertTriangle className="h-5 w-5 text-destructive" />
+          <h2 className="text-xl font-bold text-destructive">Invasive Species</h2>
+        </div>
+        <Alert className="mb-4">
+          <AlertTriangle className="h-4 w-4" />
+          <AlertDescription>
+            Invasive species displace natives and reduce biodiversity. They cause severe niche conflicts.
+          </AlertDescription>
+        </Alert>
+      </div>
+
+      {invasives.length === 0 && (
+        <div className="mb-6">
+          <p className="text-sm text-muted-foreground mb-4">
+            No invasive species have been introduced yet. Click below to simulate an invasion:
+          </p>
+          <div className="space-y-2">
+            {availableInvasives.map(invasiveId => (
+              <Button
+                key={invasiveId}
+                variant="destructive"
+                size="sm"
+                className="w-full text-left justify-start"
+                onClick={() => onIntroduceInvasive(invasiveId)}
+              >
+                Introduce {invasiveId.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+              </Button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {invasives.map((invasive) => (
+          <SpeciesCard
+            key={invasive.id}
+            species={invasive}
+            isSelected={selectedSpecies?.id === invasive.id}
+            onSelect={() => onSpeciesSelect(invasive)}
+            onInfo={() => onSpeciesInfo(invasive)}
+            isPlaced={!!invasive.placedInHabitat}
+          />
+        ))}
+      </div>
+
+      {selectedSpecies?.isInvasive && (
+        <div className="mt-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+          <h3 className="font-semibold text-destructive mb-2">
+            Invasion Impact
+          </h3>
+          <p className="text-sm text-destructive/80 mb-3">
+            {selectedSpecies.invasionImpact}
+          </p>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-destructive">Competes with:</p>
+            <div className="flex flex-wrap gap-1">
+              {selectedSpecies.competesWith?.map((competitorId) => (
+                <span
+                  key={competitorId}
+                  className="text-xs px-2 py-1 bg-destructive text-destructive-foreground rounded-full"
+                >
+                  {competitorId.replace('-', ' ')}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

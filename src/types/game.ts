@@ -25,6 +25,9 @@ export interface Species {
   description: string;
   conservationStatus: string;
   placedInHabitat?: string;
+  isInvasive?: boolean;
+  competesWith?: string[];
+  invasionImpact?: string;
 }
 
 export interface GameState {
@@ -37,11 +40,12 @@ export interface GameState {
 
 export interface Conflict {
   id: string;
-  type: 'resource' | 'space' | 'predation';
+  type: 'resource' | 'space' | 'predation' | 'invasion';
   species: string[];
   habitat: string;
   severity: 'low' | 'medium' | 'high';
   description: string;
+  invasiveSpecies?: string[];
 }
 
 export interface GameEvent {
@@ -51,4 +55,6 @@ export interface GameEvent {
   description: string;
   effects: string[];
   duration: number;
+  targetHabitat?: string;
+  invasiveSpeciesId?: string;
 }

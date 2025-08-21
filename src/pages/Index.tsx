@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Species, Habitat } from '@/types/game';
 import { GameBoard } from '@/components/GameBoard';
 import { SpeciesPanel } from '@/components/SpeciesPanel';
+import { InvasiveSpeciesPanel } from '@/components/InvasiveSpeciesPanel';
 import { GameStats } from '@/components/GameStats';
 import { SpeciesInfoModal } from '@/components/SpeciesInfoModal';
 import { useGameLogic } from '@/hooks/useGameLogic';
@@ -9,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import floridaEcosystems from '@/assets/florida-ecosystems.jpg';
 
 const Index = () => {
-  const { habitats, species, gameState, placeSpecies } = useGameLogic();
+  const { habitats, species, invasives, gameState, placeSpecies, introduceInvasiveSpecies } = useGameLogic();
   const [selectedSpecies, setSelectedSpecies] = useState<Species | null>(null);
   const [infoSpecies, setInfoSpecies] = useState<Species | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -42,9 +43,14 @@ const Index = () => {
 
     // Check if habitat is at capacity
     if (habitat.currentOccupants.length >= habitat.capacity) {
+      const warningType = species.isInvasive ? "Invasion Warning" : "Habitat Full";
+      const warningMessage = species.isInvasive 
+        ? `${species.name} will likely displace native species in ${habitat.name}!`
+        : `${habitat.name} is at maximum capacity. This will create competition!`;
+      
       toast({
-        title: "Habitat Full", 
-        description: `${habitat.name} is at maximum capacity. This will create competition!`,
+        title: warningType,
+        description: warningMessage,
         variant: "destructive"
       });
     }
@@ -52,9 +58,20 @@ const Index = () => {
     placeSpecies(speciesId, habitatId);
     setSelectedSpecies(null);
     
+    const placementType = species.isInvasive ? "Invasive Species Introduced" : "Species Placed";
     toast({
-      title: "Species Placed",
+      title: placementType,
       description: `${species.name} has been placed in ${habitat.name}`,
+      variant: species.isInvasive ? "destructive" : "default"
+    });
+  };
+
+  const handleIntroduceInvasive = (invasiveId: string) => {
+    introduceInvasiveSpecies(invasiveId);
+    toast({
+      title: "Invasive Species Introduced",
+      description: "A new invasive species is now available to place. Handle with caution!",
+      variant: "destructive"
     });
   };
 
@@ -72,7 +89,7 @@ const Index = () => {
     }
   };
 
-  const placedSpeciesCount = species.filter(s => s.placedInHabitat).length;
+  const placedSpeciesCount = [...species, ...invasives].filter(s => s.placedInHabitat).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -100,7 +117,7 @@ const Index = () => {
           <GameStats 
             gameState={gameState}
             placedSpeciesCount={placedSpeciesCount}
-            totalSpecies={species.length}
+            totalSpecies={species.length + invasives.length}
           />
         </div>
       </div>
@@ -109,7 +126,7 @@ const Index = () => {
       <div className="flex h-[calc(100vh-200px)]">
         <SpeciesPanel
           species={species}
-          selectedSpecies={selectedSpecies}
+          selectedSpecies={selectedSpecies?.isInvasive ? null : selectedSpecies}
           onSpeciesSelect={handleSpeciesSelect}
           onSpeciesInfo={handleSpeciesInfo}
         />
@@ -119,6 +136,14 @@ const Index = () => {
           onHabitatClick={handleHabitatClick}
           selectedSpecies={selectedSpecies}
           onSpeciesPlace={handleSpeciesPlace}
+        />
+
+        <InvasiveSpeciesPanel
+          invasives={invasives}
+          selectedSpecies={selectedSpecies?.isInvasive ? selectedSpecies : null}
+          onSpeciesSelect={handleSpeciesSelect}
+          onSpeciesInfo={handleSpeciesInfo}
+          onIntroduceInvasive={handleIntroduceInvasive}
         />
       </div>
 
