@@ -61,7 +61,70 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Game-specific habitat colors
+				habitat: {
+					wetland: 'hsl(var(--habitat-wetland))',
+					forest: 'hsl(var(--habitat-forest))',
+					grassland: 'hsl(var(--habitat-grassland))',
+					coastal: 'hsl(var(--habitat-coastal))',
+					urban: 'hsl(var(--habitat-urban))',
+					mangrove: 'hsl(var(--habitat-mangrove))'
+				},
+				// Species rarity colors
+				species: {
+					common: 'hsl(var(--species-common))',
+					uncommon: 'hsl(var(--species-uncommon))',
+					rare: 'hsl(var(--species-rare))',
+					endangered: 'hsl(var(--species-endangered))'
+				},
+				// Game state colors
+				game: {
+					success: 'hsl(var(--success))',
+					warning: 'hsl(var(--warning))',
+					conflict: 'hsl(var(--conflict))'
+				},
+				// Natural Florida colors
+				ocean: {
+					deep: 'hsl(var(--ocean-deep))',
+					light: 'hsl(var(--ocean-light))'
+				},
+				wetland: {
+					DEFAULT: 'hsl(var(--wetland))',
+					light: 'hsl(var(--wetland-light))'
+				},
+				forest: {
+					DEFAULT: 'hsl(var(--forest))',
+					light: 'hsl(var(--forest-light))'
+				},
+				grassland: {
+					DEFAULT: 'hsl(var(--grassland))',
+					light: 'hsl(var(--grassland-light))'
+				},
+				sand: {
+					DEFAULT: 'hsl(var(--sand))',
+					dark: 'hsl(var(--sand-dark))'
+				},
+				coral: {
+					DEFAULT: 'hsl(var(--coral))',
+					light: 'hsl(var(--coral-light))'
+				},
+				sunset: 'hsl(var(--sunset))'
+			},
+			backgroundImage: {
+				'gradient-ocean': 'var(--gradient-ocean)',
+				'gradient-forest': 'var(--gradient-forest)',
+				'gradient-sunset': 'var(--gradient-sunset)',
+				'gradient-wetland': 'var(--gradient-wetland)'
+			},
+			boxShadow: {
+				'habitat': 'var(--shadow-habitat)',
+				'species': 'var(--shadow-species)',
+				'hover': 'var(--shadow-hover)'
+			},
+			transitionTimingFunction: {
+				'smooth': 'var(--transition-smooth)',
+				'bounce': 'var(--transition-bounce)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
