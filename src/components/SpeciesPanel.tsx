@@ -32,7 +32,7 @@ export function SpeciesPanel({
             isSelected={selectedSpecies?.id === animal.id}
             onSelect={() => onSpeciesSelect(animal)}
             onInfo={() => onSpeciesInfo(animal)}
-            isPlaced={!!animal.placedInHabitat}
+            isPlaced={!!(animal.placedInHabitats && animal.placedInHabitats.length > 0)}
           />
         ))}
       </div>

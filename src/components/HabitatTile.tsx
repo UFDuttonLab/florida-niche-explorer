@@ -9,6 +9,7 @@ interface HabitatTileProps {
   onDrop: (e: React.DragEvent) => void;
   onDragOver: (e: React.DragEvent) => void;
   canAcceptSpecies: boolean;
+  onRemoveSpecies?: (speciesId: string, habitatId: string) => void;
 }
 
 const habitatStyles = {
@@ -34,7 +35,8 @@ export function HabitatTile({
   onClick, 
   onDrop, 
   onDragOver, 
-  canAcceptSpecies 
+  canAcceptSpecies,
+  onRemoveSpecies 
 }: HabitatTileProps) {
   const isNearCapacity = habitat.currentOccupants.length >= habitat.capacity;
   const hasConflict = habitat.currentOccupants.length > 1;
@@ -105,7 +107,12 @@ export function HabitatTile({
         {habitat.currentOccupants.length > 0 && (
           <div className="space-y-2">
             {habitat.currentOccupants.map((species) => (
-              <SpeciesChip key={species.id} species={species} compact />
+              <SpeciesChip 
+                key={species.id} 
+                species={species} 
+                showRemove={true}
+                onRemove={() => onRemoveSpecies?.(species.id, habitat.id)}
+              />
             ))}
           </div>
         )}

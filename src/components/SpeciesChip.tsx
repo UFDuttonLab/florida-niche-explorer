@@ -1,52 +1,45 @@
 import React from 'react';
 import { Species } from '@/types/game';
-import { cn } from '@/lib/utils';
+import { X } from 'lucide-react';
 
 interface SpeciesChipProps {
   species: Species;
-  compact?: boolean;
+  onRemove?: () => void;
+  showRemove?: boolean;
 }
 
-const rarityStyles = {
-  common: 'bg-species-common',
-  uncommon: 'bg-species-uncommon',
-  rare: 'bg-species-rare',
-  endangered: 'bg-species-endangered'
-};
-
-export function SpeciesChip({ species, compact = false }: SpeciesChipProps) {
+export function SpeciesChip({ species, onRemove, showRemove = false }: SpeciesChipProps) {
+  const isInvasive = species.isInvasive;
+  
   return (
-    <div className={cn(
-      'flex items-center gap-2 p-2 bg-white/90 rounded-lg shadow-species',
-      compact && 'p-1'
-    )}>
+    <div
+      className={`
+        inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium
+        ${isInvasive 
+          ? 'bg-species-invasive text-white' 
+          : 'bg-species-chip text-species-chip-foreground'
+        }
+        border transition-all duration-200 hover:shadow-sm
+      `}
+    >
       <img
         src={species.image}
         alt={species.name}
-        className={cn(
-          'rounded object-cover',
-          compact ? 'w-6 h-6' : 'w-8 h-8'
-        )}
+        className="w-4 h-4 rounded-full object-cover"
       />
-      <div className="flex-1 min-w-0">
-        <p className={cn(
-          'font-medium text-foreground truncate',
-          compact ? 'text-xs' : 'text-sm'
-        )}>
-          {species.name}
-        </p>
-        <div className="flex items-center gap-1">
-          <div 
-            className={cn(
-              'w-2 h-2 rounded-full',
-              rarityStyles[species.rarity]
-            )}
-          />
-          <span className="text-xs text-muted-foreground capitalize">
-            {species.rarity}
-          </span>
-        </div>
-      </div>
+      <span className="truncate max-w-24">{species.name}</span>
+      {showRemove && onRemove && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
+          className="ml-1 p-0.5 rounded-full hover:bg-white/20 transition-colors"
+          aria-label={`Remove ${species.name}`}
+        >
+          <X className="w-3 h-3" />
+        </button>
+      )}
     </div>
   );
 }

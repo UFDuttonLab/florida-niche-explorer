@@ -7,7 +7,7 @@ import { invasiveSpecies } from '@/data/invasiveSpecies';
 export function useGameLogic() {
   const [habitats, setHabitats] = useState<Habitat[]>(initialHabitats);
   const [species, setSpecies] = useState<Species[]>(initialSpecies);
-  const [invasives, setInvasives] = useState<Species[]>([]);
+  const [invasives, setInvasives] = useState<Species[]>(invasiveSpecies);
   const [gameState, setGameState] = useState<GameState>({
     score: 0,
     biodiversityIndex: 0,
@@ -113,12 +113,12 @@ export function useGameLogic() {
       
       if (targetSpecies?.isInvasive) {
         setInvasives(prev => 
-          prev.map(s => s.id === speciesId ? { ...s, placedInHabitat: habitatId } : s)
+          prev.map(s => s.id === speciesId ? { ...s, placedInHabitats: [...(s.placedInHabitats || []), habitatId] } : s)
         );
       } else {
         setSpecies(prevSpecies =>
           prevSpecies.map(s =>
-            s.id === speciesId ? { ...s, placedInHabitat: habitatId } : s
+            s.id === speciesId ? { ...s, placedInHabitats: [...(s.placedInHabitats || []), habitatId] } : s
           )
         );
       }
@@ -161,12 +161,12 @@ export function useGameLogic() {
       
       if (targetSpecies?.isInvasive) {
         setInvasives(prev => 
-          prev.map(s => s.id === speciesId ? { ...s, placedInHabitat: undefined } : s)
+          prev.map(s => s.id === speciesId ? { ...s, placedInHabitats: (s.placedInHabitats || []).filter(id => id !== habitatId) } : s)
         );
       } else {
         setSpecies(prevSpecies =>
           prevSpecies.map(s =>
-            s.id === speciesId ? { ...s, placedInHabitat: undefined } : s
+            s.id === speciesId ? { ...s, placedInHabitats: (s.placedInHabitats || []).filter(id => id !== habitatId) } : s
           )
         );
       }

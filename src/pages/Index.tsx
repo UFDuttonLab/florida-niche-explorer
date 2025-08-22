@@ -10,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import floridaEcosystems from '@/assets/florida-ecosystems.jpg';
 
 const Index = () => {
-  const { habitats, species, invasives, gameState, placeSpecies, introduceInvasiveSpecies } = useGameLogic();
+  const { habitats, species, invasives, gameState, placeSpecies, removeSpecies, introduceInvasiveSpecies } = useGameLogic();
   const [selectedSpecies, setSelectedSpecies] = useState<Species | null>(null);
   const [infoSpecies, setInfoSpecies] = useState<Species | null>(null);
   const [showInfo, setShowInfo] = useState(false);
@@ -89,7 +89,7 @@ const Index = () => {
     }
   };
 
-  const placedSpeciesCount = [...species, ...invasives].filter(s => s.placedInHabitat).length;
+  const placedSpeciesCount = [...species, ...invasives].filter(s => s.placedInHabitats && s.placedInHabitats.length > 0).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -136,6 +136,7 @@ const Index = () => {
           onHabitatClick={handleHabitatClick}
           selectedSpecies={selectedSpecies}
           onSpeciesPlace={handleSpeciesPlace}
+          onRemoveSpecies={removeSpecies}
         />
 
         <InvasiveSpeciesPanel
@@ -143,7 +144,6 @@ const Index = () => {
           selectedSpecies={selectedSpecies?.isInvasive ? selectedSpecies : null}
           onSpeciesSelect={handleSpeciesSelect}
           onSpeciesInfo={handleSpeciesInfo}
-          onIntroduceInvasive={handleIntroduceInvasive}
         />
       </div>
 

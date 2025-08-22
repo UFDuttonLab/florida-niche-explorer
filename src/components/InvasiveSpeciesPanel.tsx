@@ -10,7 +10,6 @@ interface InvasiveSpeciesPanelProps {
   selectedSpecies: Species | null;
   onSpeciesSelect: (species: Species) => void;
   onSpeciesInfo: (species: Species) => void;
-  onIntroduceInvasive: (invasiveId: string) => void;
 }
 
 const availableInvasives = [
@@ -26,8 +25,7 @@ export function InvasiveSpeciesPanel({
   invasives, 
   selectedSpecies, 
   onSpeciesSelect, 
-  onSpeciesInfo,
-  onIntroduceInvasive
+  onSpeciesInfo
 }: InvasiveSpeciesPanelProps) {
   return (
     <div className="w-80 bg-destructive/5 border-l border-destructive/20 p-6 overflow-y-auto">
@@ -44,26 +42,6 @@ export function InvasiveSpeciesPanel({
         </Alert>
       </div>
 
-      {invasives.length === 0 && (
-        <div className="mb-6">
-          <p className="text-sm text-muted-foreground mb-4">
-            No invasive species have been introduced yet. Click below to simulate an invasion:
-          </p>
-          <div className="space-y-2">
-            {availableInvasives.map(invasiveId => (
-              <Button
-                key={invasiveId}
-                variant="destructive"
-                size="sm"
-                className="w-full text-left justify-start"
-                onClick={() => onIntroduceInvasive(invasiveId)}
-              >
-                Introduce {invasiveId.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-              </Button>
-            ))}
-          </div>
-        </div>
-      )}
 
       <div className="space-y-4">
         {invasives.map((invasive) => (
@@ -73,7 +51,7 @@ export function InvasiveSpeciesPanel({
             isSelected={selectedSpecies?.id === invasive.id}
             onSelect={() => onSpeciesSelect(invasive)}
             onInfo={() => onSpeciesInfo(invasive)}
-            isPlaced={!!invasive.placedInHabitat}
+            isPlaced={!!(invasive.placedInHabitats && invasive.placedInHabitats.length > 0)}
           />
         ))}
       </div>

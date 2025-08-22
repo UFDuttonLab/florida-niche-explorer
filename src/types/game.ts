@@ -24,10 +24,11 @@ export interface Species {
   threats: string[];
   description: string;
   conservationStatus: string;
-  placedInHabitat?: string;
+  placedInHabitats?: string[];
   isInvasive?: boolean;
   competesWith?: string[];
   invasionImpact?: string;
+  realizedNicheImpact?: string;
 }
 
 export interface GameState {

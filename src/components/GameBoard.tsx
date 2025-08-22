@@ -8,9 +8,10 @@ interface GameBoardProps {
   onHabitatClick: (habitat: Habitat) => void;
   selectedSpecies: Species | null;
   onSpeciesPlace: (speciesId: string, habitatId: string) => void;
+  onRemoveSpecies: (speciesId: string, habitatId: string) => void;
 }
 
-export function GameBoard({ habitats, onHabitatClick, selectedSpecies, onSpeciesPlace }: GameBoardProps) {
+export function GameBoard({ habitats, onHabitatClick, selectedSpecies, onSpeciesPlace, onRemoveSpecies }: GameBoardProps) {
   const handleDrop = (e: React.DragEvent, habitatId: string) => {
     e.preventDefault();
     const speciesId = e.dataTransfer.getData('species-id');
@@ -43,6 +44,7 @@ export function GameBoard({ habitats, onHabitatClick, selectedSpecies, onSpecies
             canAcceptSpecies={selectedSpecies ? 
               selectedSpecies.fundamentalNiche.includes(habitat.type) : false
             }
+            onRemoveSpecies={onRemoveSpecies}
           />
         ))}
       </div>

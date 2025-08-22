@@ -112,6 +112,22 @@ export function SpeciesInfoModal({ species, isOpen, onClose }: SpeciesInfoModalP
 
           <Separator />
 
+          {/* Realized Niche Impact */}
+          {species.realizedNicheImpact && (
+            <>
+              <div>
+                <h3 className="font-semibold mb-2">Realized Niche Impact from Invasive Species</h3>
+                <p className="text-sm text-muted-foreground mb-3">
+                  How invasive species restrict where this native species can actually survive:
+                </p>
+                <div className="p-3 bg-game-warning/10 rounded-lg border border-game-warning/20">
+                  <p className="text-sm leading-relaxed">{species.realizedNicheImpact}</p>
+                </div>
+              </div>
+              <Separator />
+            </>
+          )}
+
           {/* Threats */}
           <div>
             <h3 className="font-semibold mb-2">Primary Threats</h3>
