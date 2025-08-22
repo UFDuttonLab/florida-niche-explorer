@@ -155,12 +155,14 @@ const Index = () => {
       />
 
       {/* Competition Modal */}
-      <CompetitionModal
-        isOpen={showCompetition}
-        onClose={() => setShowCompetition(false)}
-        habitat={competitionHabitat!}
-        conflicts={gameState.conflicts.filter(c => c.habitat === competitionHabitat?.id)}
-      />
+      {competitionHabitat && (
+        <CompetitionModal
+          isOpen={showCompetition}
+          onClose={() => setShowCompetition(false)}
+          habitat={competitionHabitat}
+          conflicts={gameState.conflicts.filter(c => c.habitat === competitionHabitat.id)}
+        />
+      )}
     </div>
   );
 };
