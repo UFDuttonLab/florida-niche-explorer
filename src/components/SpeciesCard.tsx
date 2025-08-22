@@ -8,7 +8,7 @@ interface SpeciesCardProps {
   isSelected: boolean;
   onSelect: () => void;
   onInfo: () => void;
-  isPlaced: boolean;
+  placementCount: number;
 }
 
 const rarityStyles = {
@@ -32,7 +32,7 @@ export function SpeciesCard({
   isSelected, 
   onSelect, 
   onInfo, 
-  isPlaced 
+  placementCount 
 }: SpeciesCardProps) {
   const handleDragStart = (e: React.DragEvent) => {
     e.dataTransfer.setData('species-id', species.id);
@@ -46,10 +46,10 @@ export function SpeciesCard({
         'hover:shadow-species transform hover:scale-105',
         species.isInvasive ? invasiveStyles : rarityStyles[species.rarity],
         isSelected && 'ring-2 ring-primary',
-        isPlaced && 'opacity-60'
+        placementCount > 0 && 'ring-1 ring-game-success'
       )}
       onClick={onSelect}
-      draggable={!isPlaced}
+      draggable={true}
       onDragStart={handleDragStart}
     >
       {/* Species Image */}
@@ -106,16 +106,16 @@ export function SpeciesCard({
       </div>
 
       {/* Placement status */}
-      {isPlaced && (
-        <div className="absolute top-2 right-2 bg-game-success text-white text-xs px-2 py-1 rounded-full">
-          Placed
+      {placementCount > 0 && (
+        <div className="absolute bottom-2 left-2 bg-game-success text-white text-xs px-2 py-1 rounded-full">
+          In {placementCount} habitat{placementCount > 1 ? 's' : ''}
         </div>
       )}
       
       {/* Drag hint */}
-      {!isPlaced && isSelected && (
+      {isSelected && (
         <div className="mt-2 text-xs text-primary">
-          Drag to place in habitat
+          {placementCount > 0 ? 'Drag to place in additional habitats' : 'Drag to place in habitat'}
         </div>
       )}
     </div>

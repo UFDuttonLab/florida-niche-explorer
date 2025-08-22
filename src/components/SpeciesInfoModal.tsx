@@ -120,8 +120,20 @@ export function SpeciesInfoModal({ species, isOpen, onClose }: SpeciesInfoModalP
                 <p className="text-sm text-muted-foreground mb-3">
                   How invasive species restrict where this native species can actually survive:
                 </p>
-                <div className="p-3 bg-game-warning/10 rounded-lg border border-game-warning/20">
-                  <p className="text-sm leading-relaxed">{species.realizedNicheImpact}</p>
+                <div className="p-4 bg-game-warning/10 rounded-lg border border-game-warning/20 space-y-3">
+                  <div className="text-sm leading-relaxed whitespace-pre-line">
+                    {species.realizedNicheImpact}
+                  </div>
+                  
+                  {/* What If Scenarios */}
+                  <div className="mt-4 p-3 bg-background/50 rounded border border-game-warning/30">
+                    <h4 className="font-medium text-sm mb-2">💡 What If Scenarios:</h4>
+                    <div className="text-xs space-y-1 text-muted-foreground">
+                      <div>• <strong>Early Intervention:</strong> Removing invasives within 2 years could restore 80% of original habitat</div>
+                      <div>• <strong>Delayed Action:</strong> Waiting 5+ years may require decades for ecosystem recovery</div>
+                      <div>• <strong>Multiple Invasives:</strong> Synergistic effects can accelerate habitat loss exponentially</div>
+                    </div>
+                  </div>
                 </div>
               </div>
               <Separator />

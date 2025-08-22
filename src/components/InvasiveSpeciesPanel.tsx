@@ -51,7 +51,7 @@ export function InvasiveSpeciesPanel({
             isSelected={selectedSpecies?.id === invasive.id}
             onSelect={() => onSpeciesSelect(invasive)}
             onInfo={() => onSpeciesInfo(invasive)}
-            isPlaced={!!(invasive.placedInHabitats && invasive.placedInHabitats.length > 0)}
+            placementCount={invasive.placedInHabitats ? invasive.placedInHabitats.length : 0}
           />
         ))}
       </div>
