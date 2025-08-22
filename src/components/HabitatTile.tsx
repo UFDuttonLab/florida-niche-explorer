@@ -2,6 +2,8 @@ import React from 'react';
 import { Habitat } from '@/types/game';
 import { cn } from '@/lib/utils';
 import { SpeciesChip } from './SpeciesChip';
+import { Button } from '@/components/ui/button';
+import { AlertTriangle } from 'lucide-react';
 
 interface HabitatTileProps {
   habitat: Habitat;
@@ -10,6 +12,7 @@ interface HabitatTileProps {
   onDragOver: (e: React.DragEvent) => void;
   canAcceptSpecies: boolean;
   onRemoveSpecies?: (speciesId: string, habitatId: string) => void;
+  onCompetitionClick?: (habitat: Habitat) => void;
 }
 
 const habitatStyles = {
@@ -36,10 +39,12 @@ export function HabitatTile({
   onDrop, 
   onDragOver, 
   canAcceptSpecies,
-  onRemoveSpecies 
+  onRemoveSpecies,
+  onCompetitionClick 
 }: HabitatTileProps) {
   const isNearCapacity = habitat.currentOccupants.length >= habitat.capacity;
   const hasConflict = habitat.currentOccupants.length > 1;
+  const showCompetitionButton = habitat.currentOccupants.length >= 2;
 
   return (
     <div
@@ -118,10 +123,35 @@ export function HabitatTile({
         )}
       </div>
 
+      {/* Competition Button */}
+      {showCompetitionButton && (
+        <div className="absolute top-2 right-2">
+          <Button
+            size="sm"
+            variant="outline"
+            className="bg-white/90 text-gray-800 border-white/50 hover:bg-white hover:text-gray-900"
+            onClick={(e) => {
+              e.stopPropagation();
+              onCompetitionClick?.(habitat);
+            }}
+          >
+            <AlertTriangle className="w-4 h-4 mr-1" />
+            Competition
+          </Button>
+        </div>
+      )}
+
       {/* Drop Zone Indicator */}
-      {canAcceptSpecies && (
+      {canAcceptSpecies && !isNearCapacity && (
         <div className="absolute inset-0 bg-accent/20 border-2 border-dashed border-accent rounded-xl flex items-center justify-center">
           <span className="text-accent font-medium">Drop here</span>
+        </div>
+      )}
+      
+      {/* Capacity Full Indicator */}
+      {canAcceptSpecies && isNearCapacity && (
+        <div className="absolute inset-0 bg-destructive/20 border-2 border-dashed border-destructive rounded-xl flex items-center justify-center">
+          <span className="text-destructive font-medium">Capacity Full</span>
         </div>
       )}
     </div>

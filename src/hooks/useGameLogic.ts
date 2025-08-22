@@ -97,6 +97,11 @@ export function useGameLogic() {
             return habitat;
           }
 
+          // Check capacity limits - prevent placement if at capacity
+          if (habitat.currentOccupants.length >= habitat.capacity) {
+            return habitat;
+          }
+
           const updatedHabitat = {
             ...habitat,
             currentOccupants: [...habitat.currentOccupants, speciesData]

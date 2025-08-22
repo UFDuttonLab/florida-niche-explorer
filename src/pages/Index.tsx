@@ -3,8 +3,9 @@ import { Species, Habitat } from '@/types/game';
 import { GameBoard } from '@/components/GameBoard';
 import { SpeciesPanel } from '@/components/SpeciesPanel';
 import { InvasiveSpeciesPanel } from '@/components/InvasiveSpeciesPanel';
-import { GameStats } from '@/components/GameStats';
+
 import { SpeciesInfoModal } from '@/components/SpeciesInfoModal';
+import { CompetitionModal } from '@/components/CompetitionModal';
 import { useGameLogic } from '@/hooks/useGameLogic';
 import { useToast } from '@/hooks/use-toast';
 import floridaEcosystems from '@/assets/florida-ecosystems.jpg';
@@ -14,6 +15,8 @@ const Index = () => {
   const [selectedSpecies, setSelectedSpecies] = useState<Species | null>(null);
   const [infoSpecies, setInfoSpecies] = useState<Species | null>(null);
   const [showInfo, setShowInfo] = useState(false);
+  const [competitionHabitat, setCompetitionHabitat] = useState<Habitat | null>(null);
+  const [showCompetition, setShowCompetition] = useState(false);
   const { toast } = useToast();
 
   const handleSpeciesSelect = (species: Species) => {
@@ -41,18 +44,19 @@ const Index = () => {
       return;
     }
 
-    // Check if habitat is at capacity
+    // Check if habitat is at capacity - prevent placement if full
     if (habitat.currentOccupants.length >= habitat.capacity) {
-      const warningType = species.isInvasive ? "Invasion Warning" : "Habitat Full";
+      const warningType = species.isInvasive ? "Invasion Blocked" : "Habitat Full";
       const warningMessage = species.isInvasive 
-        ? `${species.name} will likely displace native species in ${habitat.name}!`
-        : `${habitat.name} is at maximum capacity. This will create competition!`;
+        ? `${species.name} cannot be placed - ${habitat.name} is at capacity!`
+        : `${habitat.name} is at maximum capacity. Remove a species first!`;
       
       toast({
         title: warningType,
         description: warningMessage,
         variant: "destructive"
       });
+      return;
     }
 
     placeSpecies(speciesId, habitatId);
@@ -89,6 +93,11 @@ const Index = () => {
     }
   };
 
+  const handleCompetitionClick = (habitat: Habitat) => {
+    setCompetitionHabitat(habitat);
+    setShowCompetition(true);
+  };
+
   const placedSpeciesCount = [...species, ...invasives].filter(s => s.placedInHabitats && s.placedInHabitats.length > 0).length;
 
   return (
@@ -111,19 +120,9 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Game Stats Bar */}
-      <div className="bg-card border-b border-border p-4">
-        <div className="max-w-7xl mx-auto">
-          <GameStats 
-            gameState={gameState}
-            placedSpeciesCount={placedSpeciesCount}
-            totalSpecies={species.length + invasives.length}
-          />
-        </div>
-      </div>
 
       {/* Main Game Area */}
-      <div className="flex h-[calc(100vh-200px)]">
+      <div className="flex h-[calc(100vh-132px)]">
         <SpeciesPanel
           species={species}
           selectedSpecies={selectedSpecies?.isInvasive ? null : selectedSpecies}
@@ -137,6 +136,7 @@ const Index = () => {
           selectedSpecies={selectedSpecies}
           onSpeciesPlace={handleSpeciesPlace}
           onRemoveSpecies={removeSpecies}
+          onCompetitionClick={handleCompetitionClick}
         />
 
         <InvasiveSpeciesPanel
@@ -152,6 +152,14 @@ const Index = () => {
         species={infoSpecies}
         isOpen={showInfo}
         onClose={() => setShowInfo(false)}
+      />
+
+      {/* Competition Modal */}
+      <CompetitionModal
+        isOpen={showCompetition}
+        onClose={() => setShowCompetition(false)}
+        habitat={competitionHabitat!}
+        conflicts={gameState.conflicts.filter(c => c.habitat === competitionHabitat?.id)}
       />
     </div>
   );
