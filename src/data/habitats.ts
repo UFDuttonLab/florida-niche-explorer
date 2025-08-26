@@ -7,7 +7,7 @@ export const habitats: Habitat[] = [
     name: 'Everglades Wetland',
     description: 'Slow-moving freshwater marsh with sawgrass and cypress',
     resources: ['freshwater', 'fish', 'aquatic_plants', 'nesting_sites'],
-    capacity: 3,
+    capacity: 4,
     currentOccupants: []
   },
   {
@@ -16,7 +16,7 @@ export const habitats: Habitat[] = [
     name: 'Coastal Marsh',
     description: 'Saltwater marsh with cordgrass and tidal flows',
     resources: ['saltwater', 'crustaceans', 'marsh_grass', 'mudflats'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -25,7 +25,7 @@ export const habitats: Habitat[] = [
     name: 'Pine Flatwoods',
     description: 'Open longleaf pine forest with wiregrass understory',
     resources: ['pine_seeds', 'insects', 'sandy_soil', 'open_canopy'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -34,7 +34,7 @@ export const habitats: Habitat[] = [
     name: 'Hardwood Hammock',
     description: 'Dense tropical hardwood forest with diverse canopy',
     resources: ['fruits', 'nuts', 'dense_cover', 'rich_soil'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -43,7 +43,7 @@ export const habitats: Habitat[] = [
     name: 'Dry Prairie',
     description: 'Open grassland with scattered palmetto and wildflowers',
     resources: ['grasses', 'herbs', 'open_space', 'burrow_sites'],
-    capacity: 3,
+    capacity: 4,
     currentOccupants: []
   },
   {
@@ -52,7 +52,7 @@ export const habitats: Habitat[] = [
     name: 'Sandy Beach',
     description: 'White sand beach with dune vegetation',
     resources: ['sand', 'marine_debris', 'dune_plants', 'shoreline'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -61,7 +61,7 @@ export const habitats: Habitat[] = [
     name: 'Rocky Shore',
     description: 'Rocky coastline with tide pools and algae',
     resources: ['algae', 'shellfish', 'rock_crevices', 'tidal_pools'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -70,7 +70,7 @@ export const habitats: Habitat[] = [
     name: 'Red Mangrove Forest',
     description: 'Coastal mangrove forest with prop roots and brackish water',
     resources: ['brackish_water', 'mangrove_seeds', 'root_systems', 'fish_nursery'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   },
   {
@@ -79,7 +79,7 @@ export const habitats: Habitat[] = [
     name: 'Suburban Edge',
     description: 'Human-modified landscape with gardens and buildings',
     resources: ['ornamental_plants', 'bird_feeders', 'shelter', 'water_features'],
-    capacity: 2,
+    capacity: 3,
     currentOccupants: []
   }
 ];
